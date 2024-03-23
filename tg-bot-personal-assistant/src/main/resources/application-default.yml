@@ -6,3 +6,8 @@ spring:
     url: jdbc:postgresql://${DB_URL}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+
+telegram:
+  bot:
+    token: ${TG_TOKEN}
+    name: ${TG_BOT_NAME}
