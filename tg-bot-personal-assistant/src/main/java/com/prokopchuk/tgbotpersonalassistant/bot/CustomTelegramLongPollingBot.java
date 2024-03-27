@@ -1,6 +1,7 @@
 package com.prokopchuk.tgbotpersonalassistant.bot;
 
 import com.prokopchuk.tgbotpersonalassistant.config.TelegramConfig;
+import com.prokopchuk.tgbotpersonalassistant.translation.TranslationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
@@ -13,20 +14,27 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 public class CustomTelegramLongPollingBot extends TelegramLongPollingBot {
 
   private final TelegramConfig telegramConfig;
+  private final TranslationService translationService;
 
   @Override
   public void onUpdateReceived(Update update) {
-    if (update.hasMessage() && update.getMessage().hasText()) {
-      SendMessage message = new SendMessage(); // Create a SendMessage object with mandatory fields
-      message.setChatId(update.getMessage().getChatId().toString());
-      message.setText(update.getMessage().getText());
-
-      try {
-        execute(message); // Call method to send the message
-      } catch (TelegramApiException e) {
-        e.printStackTrace();
-      }
+    if (isIgnoreMessage(update)) {
+      return;
     }
+
+    SendMessage message = new SendMessage();
+    message.setChatId(update.getMessage().getChatId().toString());
+    message.setText(String.format("Your translation is here: %s", translationService.translate(update.getMessage().getText(), "uk")));
+
+    try {
+      execute(message); // Call method to send the message
+    } catch (TelegramApiException e) {
+      e.printStackTrace();
+    }
+  }
+
+  private boolean isIgnoreMessage(Update update) {
+    return !(update.hasMessage() && update.getMessage().hasText());
   }
 
   @Override

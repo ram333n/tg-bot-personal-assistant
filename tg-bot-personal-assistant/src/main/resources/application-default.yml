@@ -11,3 +11,7 @@ telegram:
   bot:
     token: ${TG_TOKEN}
     name: ${TG_BOT_NAME}
+
+translation:
+  google:
+    api-key: ${GOOGLE_API_KEY}
