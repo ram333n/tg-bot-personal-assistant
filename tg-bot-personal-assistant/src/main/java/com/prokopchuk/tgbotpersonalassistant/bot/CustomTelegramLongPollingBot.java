@@ -1,20 +1,21 @@
 package com.prokopchuk.tgbotpersonalassistant.bot;
 
+import com.prokopchuk.tgbotpersonalassistant.commons.dto.UserRequestDto;
 import com.prokopchuk.tgbotpersonalassistant.config.TelegramConfig;
-import com.prokopchuk.tgbotpersonalassistant.translation.TranslationService;
+import com.prokopchuk.tgbotpersonalassistant.handler.DispatcherHandler;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class CustomTelegramLongPollingBot extends TelegramLongPollingBot {
 
   private final TelegramConfig telegramConfig;
-  private final TranslationService translationService;
+  private final DispatcherHandler dispatcher;
 
   @Override
   public void onUpdateReceived(Update update) {
@@ -22,14 +23,11 @@ public class CustomTelegramLongPollingBot extends TelegramLongPollingBot {
       return;
     }
 
-    SendMessage message = new SendMessage();
-    message.setChatId(update.getMessage().getChatId().toString());
-    message.setText(String.format("Your translation is here: %s", translationService.translate(update.getMessage().getText(), "uk")));
+    UserRequestDto request = new UserRequestDto(update, null);
+    boolean isDispatched = dispatcher.dispatch(request);
 
-    try {
-      execute(message); // Call method to send the message
-    } catch (TelegramApiException e) {
-      e.printStackTrace();
+    if (!isDispatched) {
+      log.warn("Request wasn't dispatched. Request: {}", request);
     }
   }
 
