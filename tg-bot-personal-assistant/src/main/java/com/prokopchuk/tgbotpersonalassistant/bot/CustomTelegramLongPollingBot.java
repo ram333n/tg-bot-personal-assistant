@@ -1,8 +1,10 @@
 package com.prokopchuk.tgbotpersonalassistant.bot;
 
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.UserRequestDto;
+import com.prokopchuk.tgbotpersonalassistant.commons.dto.session.UserSessionDto;
 import com.prokopchuk.tgbotpersonalassistant.config.TelegramConfig;
 import com.prokopchuk.tgbotpersonalassistant.handler.DispatcherHandler;
+import com.prokopchuk.tgbotpersonalassistant.session.service.UserSessionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -15,6 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 public class CustomTelegramLongPollingBot extends TelegramLongPollingBot {
 
   private final TelegramConfig telegramConfig;
+  private final UserSessionService userSessionService;
   private final DispatcherHandler dispatcher;
 
   @Override
@@ -23,7 +26,7 @@ public class CustomTelegramLongPollingBot extends TelegramLongPollingBot {
       return;
     }
 
-    UserRequestDto request = new UserRequestDto(update, null);
+    UserRequestDto request = getUserRequest(update);
     boolean isDispatched = dispatcher.dispatch(request);
 
     if (!isDispatched) {
@@ -33,6 +36,14 @@ public class CustomTelegramLongPollingBot extends TelegramLongPollingBot {
 
   private boolean isIgnoreMessage(Update update) {
     return !(update.hasMessage() && update.getMessage().hasText());
+  }
+
+  private UserRequestDto getUserRequest(Update update) {
+    Long chatId = update.getMessage().getChatId();
+    UserSessionDto session = userSessionService.getUserSessionByChatId(chatId)
+        .orElse(UserSessionDto.start(chatId));
+
+    return new UserRequestDto(update, session);
   }
 
   @Override

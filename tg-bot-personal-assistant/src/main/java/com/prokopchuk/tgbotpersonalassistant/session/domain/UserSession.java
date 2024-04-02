@@ -20,15 +20,17 @@ public class UserSession {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "user_id")
+  @Column(name = "user_id", nullable = false)
   private Long userId;
 
+  @Column(name = "chat_id", nullable = false)
+  private Long chatId;
+
   @Enumerated(EnumType.STRING)
-  @Column(name = "state")
+  @Column(name = "state", nullable = false)
   private ConversationState state;
 
   @Column(name = "state_data", columnDefinition = "TEXT")
   private String stateData;
 
-  //TODO: think about general mechanism of saving state
 }

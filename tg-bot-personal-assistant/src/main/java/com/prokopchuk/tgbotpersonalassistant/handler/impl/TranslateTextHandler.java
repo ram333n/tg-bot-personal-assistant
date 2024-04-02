@@ -1,13 +1,11 @@
 package com.prokopchuk.tgbotpersonalassistant.handler.impl;
 
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.UserRequestDto;
-import com.prokopchuk.tgbotpersonalassistant.commons.dto.translation.TranslationResultDto;
 import com.prokopchuk.tgbotpersonalassistant.handler.UserRequestHandler;
 import com.prokopchuk.tgbotpersonalassistant.sender.SenderService;
 import com.prokopchuk.tgbotpersonalassistant.translation.TranslationService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 
 @Component
 @AllArgsConstructor
