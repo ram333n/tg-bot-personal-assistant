@@ -9,18 +9,24 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "user_sessions")
+@Table(
+    name = "users_sessions",
+    uniqueConstraints = {
+        @UniqueConstraint(name = "un$users_sessions$chat_id", columnNames = {"chat_id"})
+    }
+)
 public class UserSession {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "user_id", nullable = false)
+  @Column(name = "user_id") //TODO: useless??
   private Long userId;
 
   @Column(name = "chat_id", nullable = false)

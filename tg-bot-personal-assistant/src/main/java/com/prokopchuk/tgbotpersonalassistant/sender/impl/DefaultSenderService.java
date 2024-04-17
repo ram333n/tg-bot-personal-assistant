@@ -45,6 +45,7 @@ public class DefaultSenderService extends DefaultAbsSender implements SenderServ
       SendMessage message = createMessage(chatId, text, keyboard);
       execute(message);
     } catch (TelegramApiException e) {
+      log.warn("Unable to send message. Cause: {}", e);
       throw new RuntimeException(e);
     }
   }

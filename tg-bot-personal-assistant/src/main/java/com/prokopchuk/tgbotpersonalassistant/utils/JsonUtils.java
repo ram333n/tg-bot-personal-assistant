@@ -10,11 +10,19 @@ public final class JsonUtils {
 
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
-  public static String writeAsJson(Object obj) {
+  public static String writeAsString(Object obj) {
     try {
       return OBJECT_MAPPER.writeValueAsString(obj);
     } catch (JsonProcessingException e) {
       throw new RuntimeException("Unable write object as JSON string", e);
+    }
+  }
+
+  public static <T> T read(String json, Class<T> cl) {
+    try {
+      return OBJECT_MAPPER.readValue(json, cl);
+    } catch (JsonProcessingException e) {
+      throw new RuntimeException("Unable read object from string", e);
     }
   }
 
