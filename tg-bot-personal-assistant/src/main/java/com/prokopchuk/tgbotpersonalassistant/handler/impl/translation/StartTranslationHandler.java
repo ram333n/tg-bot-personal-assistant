@@ -30,7 +30,7 @@ public class StartTranslationHandler extends AbstractUserRequestHandler {
   @Override
   public void handle(UserRequestDto request) {
     userSessionService.changeState(request.getChatId(), ConversationState.WAITING_FOR_TEXT_TO_TRANSLATE);
-    senderService.sendMessage(request.getChatId(), "Enter the text to translate");
+    senderService.sendMessageAndRemoveKeyboard(request.getChatId(), "Enter the text to translate");
   }
 
 }

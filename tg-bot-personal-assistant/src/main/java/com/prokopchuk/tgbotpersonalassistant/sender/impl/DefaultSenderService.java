@@ -8,6 +8,7 @@ import org.telegram.telegrambots.bots.DefaultAbsSender;
 import org.telegram.telegrambots.bots.DefaultBotOptions;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardRemove;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Slf4j
@@ -22,7 +23,7 @@ public class DefaultSenderService extends DefaultAbsSender implements SenderServ
   public void sendMessage(Long chatId, String text) {
     try {
       log.info("Sending message. Chat id: {}, text: {}", chatId, text);
-      SendMessage message = createMessage(chatId, text);
+      SendMessage message = createMessage(chatId, text, false);
       execute(message);
     } catch (TelegramApiException e) {
       log.warn("Unable to send message. Cause: {}", e);
@@ -30,10 +31,11 @@ public class DefaultSenderService extends DefaultAbsSender implements SenderServ
     }
   }
 
-  private SendMessage createMessage(Long chatId, String text) {
+  private SendMessage createMessage(Long chatId, String text, boolean enableMarkdown) {
     SendMessage message = new SendMessage();
     message.setChatId(chatId);
     message.setText(text);
+    message.enableMarkdownV2(enableMarkdown);
 
     return message;
   }
@@ -51,10 +53,35 @@ public class DefaultSenderService extends DefaultAbsSender implements SenderServ
   }
 
   private SendMessage createMessage(Long chatId, String text, ReplyKeyboard keyboard) {
-    SendMessage message = createMessage(chatId, text);
+    SendMessage message = createMessage(chatId, text, false);
     message.setReplyMarkup(keyboard);
 
     return message;
+  }
+
+  @Override
+  public void sendMessageWithMarkdown(Long chatId, String text) {
+    try {
+      log.info("Sending message. Chat id: {}, text: {}", chatId, text);
+      SendMessage message = createMessage(chatId, text, true);
+      execute(message);
+    } catch (TelegramApiException e) {
+      log.warn("Unable to send message. Cause: {}", e);
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public void sendMessageAndRemoveKeyboard(Long chatId, String text) {
+    try {
+      log.info("Sending message. Chat id: {}, text: {}", chatId, text);
+      SendMessage message = createMessage(chatId, text, false);
+      message.setReplyMarkup(new ReplyKeyboardRemove(true));
+      execute(message);
+    } catch (TelegramApiException e) {
+      log.warn("Unable to send message. Cause: {}", e);
+      throw new RuntimeException(e);
+    }
   }
 
 }

@@ -6,7 +6,7 @@ import java.util.Map;
 import lombok.Getter;
 
 @Getter
-public enum Language { //TODO: add more languages
+public enum Language {
 
   ENGLISH("English", "en"),
   UKRAINIAN("Ukrainian", "uk"),
@@ -16,8 +16,10 @@ public enum Language { //TODO: add more languages
   ITALIAN("Italian", "it"),
   PORTUGUESE("Portuguese", "pt"),
   DUTCH("Dutch", "nl"),
+  JAPANESE("Japanese", "ja"),
   SWEDISH("Swedish", "sv"),
   POLISH("Polish", "pl"),
+  ARABIC("Arabic", "ar"),
   GREEK("Greek", "el"),
   NORWEGIAN("Norwegian", "no"),
   DANISH("Danish", "da"),
@@ -26,7 +28,36 @@ public enum Language { //TODO: add more languages
   FINNISH("Finnish", "fi"),
   ROMANIAN("Romanian", "ro"),
   CATALAN("Catalan", "ca"),
-  SERBIAN("Serbian", "sr");
+  SERBIAN("Serbian", "sr"),
+  CHINESE_SIMPLIFIED("Chinese (Simplified)", "zh-CN"),
+  CHINESE_TRADITIONAL("Chinese (Traditional)", "zh-TW"),
+  KOREAN("Korean", "ko"),
+  HINDI("Hindi", "hi"),
+  TURKISH("Turkish", "tr"),
+  VIETNAMESE("Vietnamese", "vi"),
+  THAI("Thai", "th"),
+  HEBREW("Hebrew", "he"),
+  INDONESIAN("Indonesian", "id"),
+  SLOVAK("Slovak", "sk"),
+  CROATIAN("Croatian", "hr"),
+  LITHUANIAN("Lithuanian", "lt"),
+  SLOVENIAN("Slovenian", "sl"),
+  LATVIAN("Latvian", "lv"),
+  BULGARIAN("Bulgarian", "bg"),
+  ESTONIAN("Estonian", "et"),
+  ICELANDIC("Icelandic", "is"),
+  MALAY("Malay", "ms"),
+  MALTESE("Maltese", "mt"),
+  MACEDONIAN("Macedonian", "mk"),
+  PERSIAN("Persian", "fa"),
+  SWAHILI("Swahili", "sw"),
+  FILIPINO("Filipino", "fil"),
+  URDU("Urdu", "ur"),
+  TAMIL("Tamil", "ta"),
+  TELUGU("Telugu", "te"),
+  GUJARATI("Gujarati", "gu"),
+  KANNADA("Kannada", "kn"),
+  MAORI("Maori", "mi");
 
   private static final Map<String, Language> LANGUAGES_BY_CODE = new HashMap<>();
   private static final Map<String, Language> LANGUAGES_BY_NAME = new HashMap<>();

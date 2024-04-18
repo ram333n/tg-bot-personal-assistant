@@ -19,7 +19,7 @@ public class EnteredTargetLanguageHandler extends AbstractUserRequestHandler {
 
   private static final String TRANSLATION_RESPONSE_FORMAT
       = "Your translation from %s to %s is:\n"
-      + "%s";
+      + "`%s`";
 
   private final TranslationService translationService;
   private final SelectLanguageReplyKeyboardBuilder languageKeyboardBuilder;
@@ -111,7 +111,7 @@ public class EnteredTargetLanguageHandler extends AbstractUserRequestHandler {
         translationResult.getTranslation()
     );
 
-    senderService.sendMessage(chatId, message);
+    senderService.sendMessageWithMarkdown(chatId, message);
   }
 
 }
