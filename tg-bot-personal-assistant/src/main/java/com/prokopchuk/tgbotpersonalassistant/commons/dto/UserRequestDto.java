@@ -59,4 +59,12 @@ public class UserRequestDto {
     return session.getId();
   }
 
+  public boolean isWaitingForTextToGenerateQr() {
+    return ConversationState.WAITING_FOR_TEXT_TO_GENERATE_QR.equals(session.getState());
+  }
+
+  public Integer getMessageId() {
+    return update.getMessage().getMessageId();
+  }
+
 }

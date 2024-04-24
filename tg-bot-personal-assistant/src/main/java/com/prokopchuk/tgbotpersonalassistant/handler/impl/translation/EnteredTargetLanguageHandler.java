@@ -68,7 +68,7 @@ public class EnteredTargetLanguageHandler extends AbstractUserRequestHandler {
 
     Language language = Language.fromName(input);
     TranslationResultDto translationResult = translationService.translate(translateStateData.getText(), language.getCode());
-    sendTranslationResponse(request.getChatId(), translationResult);
+    sendTranslationResponse(request.getChatId(), translateStateData.getTextMessageId(), translationResult);
     moveToStartState(request.getChatId());
   }
 
@@ -104,14 +104,14 @@ public class EnteredTargetLanguageHandler extends AbstractUserRequestHandler {
     );
   }
 
-  private void sendTranslationResponse(Long chatId, TranslationResultDto translationResult) { //TODO: maybe add src text
+  private void sendTranslationResponse(Long chatId, Integer messageId, TranslationResultDto translationResult) {
     String message = String.format(TRANSLATION_RESPONSE_FORMAT,
         Language.fromCode(translationResult.getSourceLang()).getName(),
         Language.fromCode(translationResult.getTargetLang()).getName(),
         translationResult.getTranslation()
     );
 
-    senderService.sendMessageWithMarkdown(chatId, message);
+    senderService.replyWithMessageAndMarkdown(chatId, messageId, message);
   }
 
 }

@@ -8,7 +8,8 @@ public enum ConversationState {
 
   START(MockStateData.class),
   WAITING_FOR_TEXT_TO_TRANSLATE(MockStateData.class),
-  WAITING_FOR_LANGUAGE_TO_TRANSLATE(TranslateStateData.class);
+  WAITING_FOR_LANGUAGE_TO_TRANSLATE(TranslateStateData.class),
+  WAITING_FOR_TEXT_TO_GENERATE_QR(MockStateData.class);
 
   private static final EnumSet<ConversationState> TRANSLATION_STATES = EnumSet.of(
       START,

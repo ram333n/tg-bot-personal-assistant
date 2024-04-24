@@ -6,6 +6,7 @@ import lombok.Data;
 public class TranslateStateData {
 
   private String text;
+  private Integer textMessageId;
   private String targetLang;
   private int languagePage = 0;
 
