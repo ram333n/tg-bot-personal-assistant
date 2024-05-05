@@ -128,4 +128,57 @@ public class DefaultSenderService extends DefaultAbsSender implements SenderServ
     }
   }
 
+  @Override
+  public void replyAndRemoveKeyboard(Long chatId, Integer messageId, String text) {
+    try {
+      log.info("Replying to message. Chat id: {}, message id: {}, text: {}", chatId, messageId, text);
+      SendMessage message = createMessage(chatId, text, false);
+      message.setReplyMarkup(new ReplyKeyboardRemove(true));
+      message.setReplyToMessageId(messageId);
+      execute(message);
+    } catch (TelegramApiException e) {
+      log.warn("Unable to reply to message. Cause: {}", e);
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public void reply(Long chatId, Integer messageId, String text, ReplyKeyboard keyboard) {
+    try {
+      log.info("Replying to message with keyboard. Chat id: {}, message id: {}, text: {}", chatId, messageId, text);
+      SendMessage message = createMessage(chatId, text, keyboard);
+      message.setReplyToMessageId(messageId);
+      execute(message);
+    } catch (TelegramApiException e) {
+      log.warn("Unable to reply to message with keyboard. Cause: {}", e);
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public void sendMessageWithMarkdown(Long chatId, String text, ReplyKeyboard keyboard) {
+    try {
+      log.info("Sending message with enabled markdown and keyboard. Chat id: {}, text: {}", chatId, text);
+      SendMessage message = createMessage(chatId, text, true);
+      message.setReplyMarkup(keyboard);
+      execute(message);
+    } catch (TelegramApiException e) {
+      log.warn("Unable to send message with enabled markdown and keyboard. Cause: {}", e);
+      throw new RuntimeException(e);
+    }
+  }
+
+  @Override
+  public void reply(Long chatId, Integer messageId, String text) {
+    try {
+      log.info("Replying to message. Chat id: {}, message id: {}, text: {}", chatId, messageId, text);
+      SendMessage message = createMessage(chatId, text, false);
+      message.setReplyToMessageId(messageId);
+      execute(message);
+    } catch (TelegramApiException e) {
+      log.warn("Unable to reply to message. Cause: {}", e);
+      throw new RuntimeException(e);
+    }
+  }
+
 }

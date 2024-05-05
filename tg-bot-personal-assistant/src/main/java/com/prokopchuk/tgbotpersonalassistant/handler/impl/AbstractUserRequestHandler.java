@@ -14,8 +14,8 @@ public abstract class AbstractUserRequestHandler implements UserRequestHandler {
   protected final StartConversationKeyboardBuilder startConversationKeyboardBuilder;
 
   protected void moveToStartState(Long chatId) {
-    userSessionService.changeSessionStateToStartByChatId(chatId);
     senderService.sendMessage(chatId, "Main menu:", startConversationKeyboardBuilder.build());
+    userSessionService.changeSessionStateToStartByChatId(chatId);
   }
 
 }

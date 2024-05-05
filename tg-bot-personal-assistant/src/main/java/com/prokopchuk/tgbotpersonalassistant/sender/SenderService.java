@@ -17,4 +17,12 @@ public interface SenderService {
 
   void replyWithImage(Long chatId, Integer messageId, InputStream image, String text);
 
+  void replyAndRemoveKeyboard(Long chatId, Integer messageId, String text);
+
+  void reply(Long chatId, Integer messageId, String text, ReplyKeyboard keyboard);
+
+  void sendMessageWithMarkdown(Long chatId, String text, ReplyKeyboard keyboard);
+
+  void reply(Long chatId, Integer messageId, String text);
+
 }

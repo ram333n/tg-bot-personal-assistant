@@ -12,7 +12,7 @@ public interface UserSessionService {
 
   void updateSession(UserSessionDto session);
 
-  <T> void changeSessionState(Long id, ConversationState newState, T newStateData);
+  <T> void changeSessionStateBySessionId(Long id, ConversationState newState, T newStateData);
 
   <T> void changeStateData(Long id, T newStateData);
 
@@ -21,5 +21,9 @@ public interface UserSessionService {
   void changeSessionStateToStartByChatId(Long chatId);
 
   <T> T getStateData(UserSessionDto request);
+
+  void changeSessionStateWithStateDataReset(Long chatId, ConversationState newState);
+
+  <T> void changeStateDataByChatId(Long chatId, T newStateData);
 
 }

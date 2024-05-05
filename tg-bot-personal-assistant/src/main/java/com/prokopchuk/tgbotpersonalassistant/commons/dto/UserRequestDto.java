@@ -35,10 +35,6 @@ public class UserRequestDto {
     return ConversationState.WAITING_FOR_TEXT_TO_TRANSLATE.equals(session.getState());
   }
 
-  public boolean isToTranslate() {
-    return getState().isTranslationState();
-  }
-
   public ConversationState getState() {
     return session.getState();
   }
@@ -65,6 +61,22 @@ public class UserRequestDto {
 
   public Integer getMessageId() {
     return update.getMessage().getMessageId();
+  }
+
+  public boolean isWaitingForFirstLevelOptionForNotes() {
+    return ConversationState.WAITING_FOR_FIRST_LEVEL_OPTION_FOR_NOTES.equals(session.getState());
+  }
+
+  public boolean isWaitingForTitleToCreateNote() {
+    return ConversationState.WAITING_FOR_TITLE_TO_CREATE_NOTE.equals(session.getState());
+  }
+
+  public boolean isWaitingForContentToCreateNote() {
+    return ConversationState.WAITING_FOR_CONTENT_TO_CREATE_NOTE.equals(session.getState());
+  }
+
+  public boolean isWaitingForSecondLevelOptionForNotes() {
+    return ConversationState.WAITING_FOR_SECOND_LEVEL_OPTION_FOR_NOTES.equals(session.getState());
   }
 
 }

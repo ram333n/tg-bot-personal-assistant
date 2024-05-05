@@ -63,7 +63,7 @@ public class DefaultUserSessionService implements UserSessionService {
   }
 
   @Override
-  public <T> void changeSessionState(Long id, ConversationState newState, T newStateData) {
+  public <T> void changeSessionStateBySessionId(Long id, ConversationState newState, T newStateData) {
     UserSession entity = userSessionRepository.findById(id)
         .orElseThrow(() -> new IllegalStateException(String.format("Can't find session with id: %s", id)));
 
@@ -106,6 +106,24 @@ public class DefaultUserSessionService implements UserSessionService {
   @Override
   public <T> T getStateData(UserSessionDto session) {
     return JsonUtils.read(session.getStateData(), (Class<T>) session.getState().getStateDataClass());
+  }
+
+  @Override
+  public void changeSessionStateWithStateDataReset(Long chatId, ConversationState newState) {
+    UserSession entity = userSessionRepository.findByChatId(chatId)
+        .orElseThrow(() -> new IllegalStateException(String.format("Can't find session with chat id: %s", chatId)));
+
+    saveStateAndStateData(entity, newState, "");
+  }
+
+  @Override
+  public <T> void changeStateDataByChatId(Long chatId, T newStateData) {
+    UserSession entity = userSessionRepository.findByChatId(chatId)
+        .orElseThrow(() -> new IllegalStateException(String.format("Can't find session by chat id: %s", chatId)));
+
+    entity.setStateData(JsonUtils.writeAsString(newStateData));
+
+    userSessionRepository.save(entity);
   }
 
 }

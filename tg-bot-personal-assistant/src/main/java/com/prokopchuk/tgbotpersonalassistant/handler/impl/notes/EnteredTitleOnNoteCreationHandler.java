@@ -1,8 +1,8 @@
-package com.prokopchuk.tgbotpersonalassistant.handler.impl.translation;
+package com.prokopchuk.tgbotpersonalassistant.handler.impl.notes;
 
-import com.prokopchuk.tgbotpersonalassistant.commons.dto.button.StartButtonText;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.UserRequestDto;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.session.ConversationState;
+import com.prokopchuk.tgbotpersonalassistant.commons.dto.session.SaveNoteStateData;
 import com.prokopchuk.tgbotpersonalassistant.handler.impl.AbstractUserRequestHandler;
 import com.prokopchuk.tgbotpersonalassistant.keyboard.StartConversationKeyboardBuilder;
 import com.prokopchuk.tgbotpersonalassistant.sender.SenderService;
@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class StartTranslationHandler extends AbstractUserRequestHandler {
+public class EnteredTitleOnNoteCreationHandler extends AbstractUserRequestHandler {
 
   @Autowired
-  public StartTranslationHandler(
+  public EnteredTitleOnNoteCreationHandler(
       UserSessionService userSessionService,
       SenderService senderService,
       StartConversationKeyboardBuilder startConversationKeyboardBuilder
@@ -24,13 +24,26 @@ public class StartTranslationHandler extends AbstractUserRequestHandler {
 
   @Override
   public boolean isApplicable(UserRequestDto request) {
-    return request.isStartState() && request.hasTextMessage(StartButtonText.TRANSLATE.getText());
+    return request.isWaitingForTitleToCreateNote();
   }
 
   @Override
   public void handle(UserRequestDto request) {
-    userSessionService.changeState(request.getChatId(), ConversationState.WAITING_FOR_TEXT_TO_TRANSLATE);
-    senderService.replyAndRemoveKeyboard(request.getChatId(), request.getMessageId(), "Enter the text to translate");
+    String title = request.getText();
+    SaveNoteStateData stateData = createStateData(title);
+    senderService.replyWithMessageAndMarkdown(request.getChatId(), request.getMessageId(), "Enter content of note");
+    userSessionService.changeSessionStateBySessionId(
+        request.getSessionId(),
+        ConversationState.WAITING_FOR_CONTENT_TO_CREATE_NOTE,
+        stateData
+    );
+  }
+
+  private SaveNoteStateData createStateData(String title) {
+    SaveNoteStateData result = new SaveNoteStateData();
+    result.setTitle(title);
+
+    return result;
   }
 
 }

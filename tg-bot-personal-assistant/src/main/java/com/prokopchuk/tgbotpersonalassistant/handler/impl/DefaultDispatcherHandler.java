@@ -16,7 +16,7 @@ public class DefaultDispatcherHandler implements DispatcherHandler {
   private final List<UserRequestHandler> handlers;
 
   @Override
-  public boolean dispatch(UserRequestDto request) {
+  public boolean dispatch(UserRequestDto request) { //TODO: wrap into try-catch block to rethrow new exception to handle properly
     log.info("Dispatching request. Request: {}", request);
 
     for (UserRequestHandler handler : handlers) {

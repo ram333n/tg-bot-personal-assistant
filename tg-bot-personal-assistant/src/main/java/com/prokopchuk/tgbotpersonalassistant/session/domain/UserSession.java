@@ -1,5 +1,6 @@
 package com.prokopchuk.tgbotpersonalassistant.session.domain;
 
+import com.prokopchuk.tgbotpersonalassistant.commons.orm.AuditableEntity;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.session.ConversationState;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -11,8 +12,12 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 @Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(
     name = "users_sessions",
@@ -20,7 +25,7 @@ import lombok.Data;
         @UniqueConstraint(name = "un$users_sessions$chat_id", columnNames = {"chat_id"})
     }
 )
-public class UserSession {
+public class UserSession extends AuditableEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,7 +34,7 @@ public class UserSession {
   @Column(name = "user_id") //TODO: useless??
   private Long userId;
 
-  @Column(name = "chat_id", nullable = false)
+  @Column(name = "chat_id", nullable = false, unique = true)
   private Long chatId;
 
   @Enumerated(EnumType.STRING)

@@ -6,7 +6,8 @@ import lombok.Getter;
 public enum NavigationButtonText {
 
   BACK("⬅"),
-  FORWARD("➡");
+  FORWARD("➡"),
+  BACK_TO_PREVIOUS_MENU("Back to previous menu");
 
   private final String text;
 
@@ -20,6 +21,10 @@ public enum NavigationButtonText {
 
   public static boolean isForward(String input) {
     return FORWARD.getText().equals(input);
+  }
+
+  public static boolean isBackToPreviousMenu(String input) {
+    return BACK_TO_PREVIOUS_MENU.getText().equals(input);
   }
 
 }

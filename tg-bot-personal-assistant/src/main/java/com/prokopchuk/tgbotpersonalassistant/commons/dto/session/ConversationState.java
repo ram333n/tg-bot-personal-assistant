@@ -1,6 +1,5 @@
 package com.prokopchuk.tgbotpersonalassistant.commons.dto.session;
 
-import java.util.EnumSet;
 import lombok.Getter;
 
 @Getter
@@ -9,22 +8,16 @@ public enum ConversationState {
   START(MockStateData.class),
   WAITING_FOR_TEXT_TO_TRANSLATE(MockStateData.class),
   WAITING_FOR_LANGUAGE_TO_TRANSLATE(TranslateStateData.class),
-  WAITING_FOR_TEXT_TO_GENERATE_QR(MockStateData.class);
+  WAITING_FOR_TEXT_TO_GENERATE_QR(MockStateData.class),
+  WAITING_FOR_FIRST_LEVEL_OPTION_FOR_NOTES(MockStateData.class),
+  WAITING_FOR_TITLE_TO_CREATE_NOTE(MockStateData.class),
+  WAITING_FOR_CONTENT_TO_CREATE_NOTE(SaveNoteStateData.class),
+  WAITING_FOR_SECOND_LEVEL_OPTION_FOR_NOTES(ListNotesStateData.class);
 
-  private static final EnumSet<ConversationState> TRANSLATION_STATES = EnumSet.of(
-      START,
-      WAITING_FOR_TEXT_TO_TRANSLATE,
-      WAITING_FOR_LANGUAGE_TO_TRANSLATE
-  );
-
-  private Class<?> stateDataClass;
+  private final Class<?> stateDataClass;
 
   ConversationState(Class<?> stateDataClass) {
     this.stateDataClass = stateDataClass;
-  }
-
-  public boolean isTranslationState() {
-    return TRANSLATION_STATES.contains(this);
   }
 
 }

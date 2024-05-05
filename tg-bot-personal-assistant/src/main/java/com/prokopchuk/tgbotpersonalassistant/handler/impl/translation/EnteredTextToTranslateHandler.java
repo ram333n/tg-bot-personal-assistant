@@ -35,8 +35,8 @@ public class EnteredTextToTranslateHandler extends AbstractUserRequestHandler {
   @Override
   public void handle(UserRequestDto request) {
     TranslateStateData translateStateData = createTranslateData(request.getText(), request.getMessageId());
-    userSessionService.changeSessionState(request.getSessionId(), ConversationState.WAITING_FOR_LANGUAGE_TO_TRANSLATE, translateStateData);
-    senderService.sendMessage(request.getChatId(), "Select the target language", languageKeyboardBuilder.build());
+    userSessionService.changeSessionStateBySessionId(request.getSessionId(), ConversationState.WAITING_FOR_LANGUAGE_TO_TRANSLATE, translateStateData);
+    senderService.reply(request.getChatId(), request.getMessageId(), "Select the target language", languageKeyboardBuilder.build());
   }
 
   private TranslateStateData createTranslateData(String textToTranslate, Integer textMessageId) {
