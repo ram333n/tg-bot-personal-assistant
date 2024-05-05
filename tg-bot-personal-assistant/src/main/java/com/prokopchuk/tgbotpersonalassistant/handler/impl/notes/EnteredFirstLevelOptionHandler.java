@@ -48,25 +48,34 @@ public class EnteredFirstLevelOptionHandler extends AbstractUserRequestHandler {
     Integer messageId = request.getMessageId();
 
     if (NotesNavigationButtonText.isCreateNote(input)) {
-      userSessionService.changeState(chatId, ConversationState.WAITING_FOR_TITLE_TO_CREATE_NOTE);
-      senderService.replyAndRemoveKeyboard(chatId, messageId, "Enter title for new note");
+      handleCreateNote(chatId, messageId);
     } else if (NotesNavigationButtonText.isGetNotesPage(input)) {
-      Page<NoteDto> notesPage = noteService.getNotesFirstPageByChatId(chatId, NoteMessageFormatter.NOTES_PAGE_SIZE);
-      userSessionService.changeSessionStateByChatId(
-          chatId,
-          ConversationState.WAITING_FOR_SECOND_LEVEL_OPTION_FOR_NOTES,
-          new ListNotesStateData()
-      );
-      senderService.sendMessageWithMarkdown(
-          chatId,
-          NoteMessageFormatter.format(notesPage),
-          notesNavigationKeyboardBuilder.buildNotesPage(notesPage)
-      );
+      handleGetPagesNote(chatId);
     } else if (NotesNavigationButtonText.isBackToMainMenu(input)) {
       moveToStartState(chatId);
     } else {
       throw new IllegalStateException("Illegal state for on entering first level option for notes");
     }
   }
+
+  private void handleCreateNote(Long chatId, Integer messageId) {
+    userSessionService.changeState(chatId, ConversationState.WAITING_FOR_TITLE_TO_CREATE_NOTE);
+    senderService.replyAndRemoveKeyboard(chatId, messageId, "Enter title for new note");
+  }
+
+  private void handleGetPagesNote(Long chatId) {
+    Page<NoteDto> notesPage = noteService.getNotesFirstPageByChatId(chatId, NoteMessageFormatter.NOTES_PAGE_SIZE);
+    userSessionService.changeSessionStateByChatId(
+        chatId,
+        ConversationState.WAITING_FOR_SECOND_LEVEL_OPTION_FOR_NOTES,
+        new ListNotesStateData()
+    );
+    senderService.sendMessageWithMarkdown(
+        chatId,
+        NoteMessageFormatter.format(notesPage),
+        notesNavigationKeyboardBuilder.buildNotesPage(notesPage)
+    );
+  }
+
 
 }
