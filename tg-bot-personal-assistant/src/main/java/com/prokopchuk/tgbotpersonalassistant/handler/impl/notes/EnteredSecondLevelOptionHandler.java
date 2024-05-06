@@ -5,6 +5,7 @@ import com.prokopchuk.tgbotpersonalassistant.commons.dto.button.NavigationButton
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.notes.NoteDto;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.session.ConversationState;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.session.ListNotesStateData;
+import com.prokopchuk.tgbotpersonalassistant.commons.dto.session.SpecificNoteStateData;
 import com.prokopchuk.tgbotpersonalassistant.handler.impl.AbstractUserRequestHandler;
 import com.prokopchuk.tgbotpersonalassistant.keyboard.NotesNavigationKeyboardBuilder;
 import com.prokopchuk.tgbotpersonalassistant.keyboard.StartConversationKeyboardBuilder;
@@ -56,15 +57,7 @@ public class EnteredSecondLevelOptionHandler extends AbstractUserRequestHandler 
     } else if (NavigationButtonText.isBackToPreviousMenu(input)) {
       handleBackToPreviousMenu(chatId);
     } else {
-      Matcher matcher = NOTE_BUTTON_TEXT_PATTERN.matcher(input);
-
-      if (!matcher.matches()) {
-        throw new IllegalStateException("Illegal state for on entering second level option for notes");
-      }
-
-      Long noteId = Long.valueOf(matcher.group("id"));
-      System.out.println(noteId);
-      System.out.println(matcher.group("noteTitle"));
+      handleSpecificNoteButton(chatId, input);
     }
   }
 
@@ -113,6 +106,29 @@ public class EnteredSecondLevelOptionHandler extends AbstractUserRequestHandler 
         chatId,
         "Previous menu:",
         notesNavigationKeyboardBuilder.buildFirstLevelOptions()
+    );
+  }
+
+  private void handleSpecificNoteButton(Long chatId, String input) {
+    Matcher matcher = NOTE_BUTTON_TEXT_PATTERN.matcher(input);
+
+    if (!matcher.matches()) {
+      throw new IllegalStateException("Illegal state for on entering second level option for notes");
+    }
+
+    Long noteId = Long.valueOf(matcher.group("id"));
+    NoteDto note = noteService.getNoteById(noteId)
+            .orElseThrow(() -> new IllegalStateException(String.format("Unable to find note with id: %d", noteId)));
+
+    userSessionService.changeSessionStateByChatId(
+        chatId,
+        ConversationState.WAITING_FOR_OPERATION_FOR_SPECIFIC_NOTE,
+        SpecificNoteStateData.of(noteId)
+    );
+    senderService.sendMessageWithMarkdown(
+        chatId,
+        NoteMessageFormatter.formatSingleNoteFull(note),
+        notesNavigationKeyboardBuilder.buildSpecificNoteOptions()
     );
   }
 

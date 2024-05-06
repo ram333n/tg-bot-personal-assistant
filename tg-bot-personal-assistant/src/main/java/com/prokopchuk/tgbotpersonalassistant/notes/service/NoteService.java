@@ -1,6 +1,7 @@
 package com.prokopchuk.tgbotpersonalassistant.notes.service;
 
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.notes.NoteDto;
+import java.util.Optional;
 import org.springframework.data.domain.Page;
 
 public interface NoteService {
@@ -16,5 +17,7 @@ public interface NoteService {
   Page<NoteDto> getNotesFirstPageByChatId(Long chatId, int limit);
 
   boolean isLastPage(Long chatId, int page, int limit);
+
+  Optional<NoteDto> getNoteById(Long noteId);
 
 }

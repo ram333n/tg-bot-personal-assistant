@@ -7,6 +7,7 @@ import com.prokopchuk.tgbotpersonalassistant.notes.repository.NoteRepository;
 import com.prokopchuk.tgbotpersonalassistant.notes.service.NoteService;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -64,6 +65,12 @@ public class DefaultNoteService implements NoteService {
   public boolean isLastPage(Long chatId, int page, int limit) {
     return getNotesByChatId(chatId, page, limit)
         .isLast();
+  }
+
+  @Override
+  public Optional<NoteDto> getNoteById(Long noteId) {
+    return noteRepository.findById(noteId)
+        .map(noteMapper::toDto);
   }
 
 }

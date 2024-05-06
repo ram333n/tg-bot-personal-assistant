@@ -76,4 +76,21 @@ public class NotesNavigationKeyboardBuilder {
     return result;
   }
 
+  public ReplyKeyboardMarkup buildSpecificNoteOptions() {
+    List<KeyboardRow> rows = new ArrayList<>();
+
+    for (NotesNavigationButtonText item : NotesNavigationButtonText.getSpecificNoteOptions()) {
+      KeyboardRow currentRow = new KeyboardRow();
+      currentRow.add(item.getText());
+      rows.add(currentRow);
+    }
+
+    return ReplyKeyboardMarkup.builder()
+        .keyboard(rows)
+        .selective(true)
+        .resizeKeyboard(true)
+        .oneTimeKeyboard(false)
+        .build();
+  }
+
 }

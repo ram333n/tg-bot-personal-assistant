@@ -79,4 +79,16 @@ public class UserRequestDto {
     return ConversationState.WAITING_FOR_SECOND_LEVEL_OPTION_FOR_NOTES.equals(session.getState());
   }
 
+  public boolean isWaitingForOperationForSpecificNote() {
+    return ConversationState.WAITING_FOR_OPERATION_FOR_SPECIFIC_NOTE.equals(session.getState());
+  }
+
+  public boolean isWaitingForTitleToUpdateNote() {
+    return ConversationState.WAITING_FOR_TITLE_TO_UPDATE_NOTE.equals(session.getState());
+  }
+
+  public boolean isWaitingForContentToUpdateNote() {
+    return ConversationState.WAITING_FOR_CONTENT_TO_UPDATE_NOTE.equals(session.getState());
+  }
+
 }

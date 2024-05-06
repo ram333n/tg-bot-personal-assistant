@@ -11,10 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EnteredTitleOnNoteCreationHandler extends AbstractUserRequestHandler {
+public class EnteredTitleOnNoteUpdateHandler extends AbstractUserRequestHandler {
 
   @Autowired
-  public EnteredTitleOnNoteCreationHandler(
+  public EnteredTitleOnNoteUpdateHandler(
       UserSessionService userSessionService,
       SenderService senderService,
       StartConversationKeyboardBuilder startConversationKeyboardBuilder
@@ -24,26 +24,23 @@ public class EnteredTitleOnNoteCreationHandler extends AbstractUserRequestHandle
 
   @Override
   public boolean isApplicable(UserRequestDto request) {
-    return request.isWaitingForTitleToCreateNote();
+    return request.isWaitingForTitleToUpdateNote();
   }
 
   @Override
   public void handle(UserRequestDto request) {
+    Long chatId = request.getChatId();
     String title = request.getText();
-    SaveNoteStateData stateData = createStateData(title);
-    senderService.reply(request.getChatId(), request.getMessageId(), "Enter content of note");
+    Integer messageId = request.getMessageId();
+    SaveNoteStateData stateData = userSessionService.getStateData(request.getSession());
+
+    stateData.setTitle(title);
+    senderService.reply(chatId, messageId, "Enter new content of note");
     userSessionService.changeSessionStateBySessionId(
         request.getSessionId(),
-        ConversationState.WAITING_FOR_CONTENT_TO_CREATE_NOTE,
+        ConversationState.WAITING_FOR_CONTENT_TO_UPDATE_NOTE,
         stateData
     );
-  }
-
-  private SaveNoteStateData createStateData(String title) {
-    SaveNoteStateData result = new SaveNoteStateData();
-    result.setTitle(title);
-
-    return result;
   }
 
 }

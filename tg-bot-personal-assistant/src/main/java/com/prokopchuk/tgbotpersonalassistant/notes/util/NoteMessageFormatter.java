@@ -23,6 +23,17 @@ public final class NoteMessageFormatter {
   private static final String SINGLE_NOTE_OPERATIONS_TIP
       = "Press button with specific description and id to operate with note\\(look, edit, delete\\)";
   private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy\\-MM\\-dd HH:mm");
+  private static final String NOTE_EXTENDED_FORMAT = """
+  Id: `%d`
+  \uD83D\uDDD2 Title: `%s`
+  \uD83D\uDD52 Date created: _%s_
+  \uD83D\uDD52 Date modified: _%s_
+  
+  Content:
+  `%s`
+  
+  If you want to edit, delete or move back to notes list, press on the button with specific operation\\.
+  """;
 
   public static String format(Page<NoteDto> notes) {
     if (notes.isEmpty()) {
@@ -52,6 +63,19 @@ public final class NoteMessageFormatter {
         note.isModified()
             ? note.getDateModified().format(DATE_TIME_FORMATTER)
             : "\\-"
+    );
+  }
+
+  public static String formatSingleNoteFull(NoteDto note) {
+    return String.format(
+        NOTE_EXTENDED_FORMAT,
+        note.getId(),
+        note.getTitle(),
+        note.getDateCreated().format(DATE_TIME_FORMATTER),
+        note.isModified()
+            ? note.getDateModified().format(DATE_TIME_FORMATTER)
+            : "\\-",
+        note.getContent()
     );
   }
 
