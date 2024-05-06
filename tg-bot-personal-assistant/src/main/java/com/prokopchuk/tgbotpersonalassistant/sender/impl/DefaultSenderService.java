@@ -181,4 +181,18 @@ public class DefaultSenderService extends DefaultAbsSender implements SenderServ
     }
   }
 
+  @Override
+  public void replyWithMarkdown(Long chatId, Integer messageId, String text, ReplyKeyboard keyboard) {
+    try {
+      log.info("Replying to message with keyboard and markdown. Chat id: {}, message id: {}, text: {}", chatId, messageId, text);
+      SendMessage message = createMessage(chatId, text, true);
+      message.setReplyMarkup(keyboard);
+      message.setReplyToMessageId(messageId);
+      execute(message);
+    } catch (TelegramApiException e) {
+      log.warn("Unable to reply to message with keyboard and markdown. Cause: {}", e);
+      throw new RuntimeException(e);
+    }
+  }
+
 }

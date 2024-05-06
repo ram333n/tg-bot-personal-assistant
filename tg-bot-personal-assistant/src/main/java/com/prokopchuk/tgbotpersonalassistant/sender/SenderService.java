@@ -25,4 +25,6 @@ public interface SenderService {
 
   void reply(Long chatId, Integer messageId, String text);
 
+  void replyWithMarkdown(Long chatId, Integer messageId, String text, ReplyKeyboard keyboard);
+
 }

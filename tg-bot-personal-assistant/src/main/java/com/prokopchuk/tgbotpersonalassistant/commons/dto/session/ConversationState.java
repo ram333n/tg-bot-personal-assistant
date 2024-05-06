@@ -15,7 +15,8 @@ public enum ConversationState {
   WAITING_FOR_SECOND_LEVEL_OPTION_FOR_NOTES(ListNotesStateData.class),
   WAITING_FOR_OPERATION_FOR_SPECIFIC_NOTE(SpecificNoteStateData.class),
   WAITING_FOR_TITLE_TO_UPDATE_NOTE(SaveNoteStateData.class),
-  WAITING_FOR_CONTENT_TO_UPDATE_NOTE(SaveNoteStateData.class);
+  WAITING_FOR_CONTENT_TO_UPDATE_NOTE(SaveNoteStateData.class),
+  WAITING_FOR_CONFIRMATION_TO_DELETE_NOTE(SpecificNoteStateData.class);
 
   private final Class<?> stateDataClass;
 

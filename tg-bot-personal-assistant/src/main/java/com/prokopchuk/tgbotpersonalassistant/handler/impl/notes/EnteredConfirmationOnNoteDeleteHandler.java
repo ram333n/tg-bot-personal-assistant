@@ -1,11 +1,9 @@
 package com.prokopchuk.tgbotpersonalassistant.handler.impl.notes;
 
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.UserRequestDto;
-import com.prokopchuk.tgbotpersonalassistant.commons.dto.button.NotesNavigationButtonText;
+import com.prokopchuk.tgbotpersonalassistant.commons.dto.button.ConfirmationButtonText;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.notes.NoteDto;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.session.ConversationState;
-import com.prokopchuk.tgbotpersonalassistant.commons.dto.session.ListNotesStateData;
-import com.prokopchuk.tgbotpersonalassistant.commons.dto.session.SaveNoteStateData;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.session.SpecificNoteStateData;
 import com.prokopchuk.tgbotpersonalassistant.handler.impl.AbstractUserRequestHandler;
 import com.prokopchuk.tgbotpersonalassistant.keyboard.NotesNavigationKeyboardBuilder;
@@ -15,17 +13,17 @@ import com.prokopchuk.tgbotpersonalassistant.notes.util.NoteMessageFormatter;
 import com.prokopchuk.tgbotpersonalassistant.sender.SenderService;
 import com.prokopchuk.tgbotpersonalassistant.session.service.UserSessionService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EnteredSpecificNoteOptionHandler extends AbstractUserRequestHandler {
+public class EnteredConfirmationOnNoteDeleteHandler extends AbstractUserRequestHandler {
 
+  private static final String NOTE_WAS_DELETED_FORMAT = "Note with id: `%s` was successfully deleted";
   private final NoteService noteService;
   private final NotesNavigationKeyboardBuilder notesNavigationKeyboardBuilder;
 
   @Autowired
-  public EnteredSpecificNoteOptionHandler(
+  public EnteredConfirmationOnNoteDeleteHandler(
       UserSessionService userSessionService,
       SenderService senderService,
       StartConversationKeyboardBuilder startConversationKeyboardBuilder,
@@ -39,58 +37,50 @@ public class EnteredSpecificNoteOptionHandler extends AbstractUserRequestHandler
 
   @Override
   public boolean isApplicable(UserRequestDto request) {
-    return request.isWaitingForOperationForSpecificNote();
+    return request.isWaitingForConfirmationToDeleteNote();
   }
 
   @Override
   public void handle(UserRequestDto request) {
     Long chatId = request.getChatId();
-    Integer messageId = request.getMessageId();
     String input = request.getText();
+    Integer messageId = request.getMessageId();
     SpecificNoteStateData stateData = userSessionService.getStateData(request.getSession());
 
-    if (NotesNavigationButtonText.isUpdateNote(input)) {
-      handleUpdateNote(chatId, messageId, stateData);
-    } else if (NotesNavigationButtonText.isDeleteNote(input)) {
-      handleDeleteNote(chatId, messageId, stateData);
-    } else if (NotesNavigationButtonText.isBackToNotesPage(input)) {
-      handleBackToNotesPage(chatId);
+    if (ConfirmationButtonText.isYes(input)) {
+      handleYes(chatId, messageId, stateData);
+    } else if (ConfirmationButtonText.isNo(input)) {
+      handleNo(chatId, stateData);
     } else {
-      throw new IllegalStateException("Illegal state on handling request related to specific note");
+      throw new IllegalStateException("Illegal state on note deleting");
     }
   }
 
-  private void handleUpdateNote(Long chatId, Integer messageId, SpecificNoteStateData stateData) {
+  private void handleYes(Long chatId, Integer messageId, SpecificNoteStateData stateData) {
     Long noteId = stateData.getNoteId();
-    userSessionService.changeSessionStateByChatId(
+    noteService.deleteNoteById(noteId);
+    userSessionService.changeSessionStateWithStateDataReset(
         chatId,
-        ConversationState.WAITING_FOR_TITLE_TO_UPDATE_NOTE,
-        new SaveNoteStateData(noteId)
+        ConversationState.WAITING_FOR_FIRST_LEVEL_OPTION_FOR_NOTES
     );
-    senderService.replyAndRemoveKeyboard(chatId, messageId, "Enter new title for note");
-  }
-
-  private void handleDeleteNote(Long chatId, Integer messageId, SpecificNoteStateData stateData) {
-    userSessionService.changeState(chatId, ConversationState.WAITING_FOR_CONFIRMATION_TO_DELETE_NOTE);
-    senderService.reply(
+    senderService.replyWithMarkdown(
         chatId,
         messageId,
-        "Are you sure you want to delete this note?",
-        notesNavigationKeyboardBuilder.buildConfirmationButtons()
+        String.format(NOTE_WAS_DELETED_FORMAT, noteId),
+        notesNavigationKeyboardBuilder.buildFirstLevelOptions()
     );
   }
 
-  private void handleBackToNotesPage(Long chatId) {
-    Page<NoteDto> notesPage = noteService.getNotesFirstPageByChatId(chatId, NoteMessageFormatter.NOTES_PAGE_SIZE);
-    userSessionService.changeSessionStateByChatId(
-        chatId,
-        ConversationState.WAITING_FOR_SECOND_LEVEL_OPTION_FOR_NOTES,
-        new ListNotesStateData()
-    );
+  private void handleNo(Long chatId, SpecificNoteStateData stateData) {
+    Long noteId = stateData.getNoteId();
+    NoteDto note = noteService.getNoteById(noteId)
+            .orElseThrow(() -> new IllegalStateException("Illegal state on handling 'no' option on deleting note"));
+
+    userSessionService.changeState(chatId, ConversationState.WAITING_FOR_OPERATION_FOR_SPECIFIC_NOTE);
     senderService.sendMessageWithMarkdown(
         chatId,
-        NoteMessageFormatter.format(notesPage),
-        notesNavigationKeyboardBuilder.buildNotesPage(notesPage)
+        NoteMessageFormatter.formatSingleNoteFull(note),
+        notesNavigationKeyboardBuilder.buildSpecificNoteOptions()
     );
   }
 

@@ -91,4 +91,8 @@ public class UserRequestDto {
     return ConversationState.WAITING_FOR_CONTENT_TO_UPDATE_NOTE.equals(session.getState());
   }
 
+  public boolean isWaitingForConfirmationToDeleteNote() {
+    return ConversationState.WAITING_FOR_CONFIRMATION_TO_DELETE_NOTE.equals(session.getState());
+  }
+
 }

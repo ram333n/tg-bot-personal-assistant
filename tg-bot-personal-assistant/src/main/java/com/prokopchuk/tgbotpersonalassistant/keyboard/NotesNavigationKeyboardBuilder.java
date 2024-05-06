@@ -1,5 +1,6 @@
 package com.prokopchuk.tgbotpersonalassistant.keyboard;
 
+import com.prokopchuk.tgbotpersonalassistant.commons.dto.button.ConfirmationButtonText;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.button.NavigationButtonText;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.button.NotesNavigationButtonText;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.notes.NoteDto;
@@ -80,6 +81,23 @@ public class NotesNavigationKeyboardBuilder {
     List<KeyboardRow> rows = new ArrayList<>();
 
     for (NotesNavigationButtonText item : NotesNavigationButtonText.getSpecificNoteOptions()) {
+      KeyboardRow currentRow = new KeyboardRow();
+      currentRow.add(item.getText());
+      rows.add(currentRow);
+    }
+
+    return ReplyKeyboardMarkup.builder()
+        .keyboard(rows)
+        .selective(true)
+        .resizeKeyboard(true)
+        .oneTimeKeyboard(false)
+        .build();
+  }
+
+  public ReplyKeyboardMarkup buildConfirmationButtons() {
+    List<KeyboardRow> rows = new ArrayList<>();
+
+    for (ConfirmationButtonText item : ConfirmationButtonText.values()) {
       KeyboardRow currentRow = new KeyboardRow();
       currentRow.add(item.getText());
       rows.add(currentRow);
