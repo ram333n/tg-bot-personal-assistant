@@ -48,7 +48,7 @@ public class DefaultNoteService implements NoteService {
   public Page<NoteDto> getNotesByChatId(Long chatId, int page, int limit) {
     Pageable pageable = createPageable(page, limit);
 
-    return noteRepository.findAll(pageable)
+    return noteRepository.findAllByChatId(chatId, pageable)
         .map(noteMapper::toDto);
   }
 
