@@ -1,7 +1,6 @@
 package com.prokopchuk.tgbotpersonalassistant.handler.impl.notes;
 
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.UserRequestDto;
-import com.prokopchuk.tgbotpersonalassistant.commons.dto.button.NavigationButtonText;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.button.NotesNavigationButtonText;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.notes.NoteDto;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.session.ConversationState;
@@ -18,13 +17,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EnteredFirstLevelOptionHandler extends AbstractUserRequestHandler {
+public class EnteredFirstLevelNoteOptionHandler extends AbstractUserRequestHandler {
 
   private final NoteService noteService;
   private final NotesNavigationKeyboardBuilder notesNavigationKeyboardBuilder;
 
   @Autowired
-  public EnteredFirstLevelOptionHandler(
+  public EnteredFirstLevelNoteOptionHandler(
       UserSessionService userSessionService,
       SenderService senderService,
       StartConversationKeyboardBuilder startConversationKeyboardBuilder,

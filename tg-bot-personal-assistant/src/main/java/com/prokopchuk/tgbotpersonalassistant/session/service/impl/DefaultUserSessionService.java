@@ -6,7 +6,7 @@ import com.prokopchuk.tgbotpersonalassistant.session.domain.UserSession;
 import com.prokopchuk.tgbotpersonalassistant.session.mapper.UserSessionMapper;
 import com.prokopchuk.tgbotpersonalassistant.session.repository.UserSessionRepository;
 import com.prokopchuk.tgbotpersonalassistant.session.service.UserSessionService;
-import com.prokopchuk.tgbotpersonalassistant.utils.JsonUtils;
+import com.prokopchuk.tgbotpersonalassistant.util.JsonUtils;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

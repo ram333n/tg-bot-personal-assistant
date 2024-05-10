@@ -1,4 +1,4 @@
-package com.prokopchuk.tgbotpersonalassistant.utils;
+package com.prokopchuk.tgbotpersonalassistant.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

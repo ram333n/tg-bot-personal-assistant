@@ -95,4 +95,16 @@ public class UserRequestDto {
     return ConversationState.WAITING_FOR_CONFIRMATION_TO_DELETE_NOTE.equals(session.getState());
   }
 
+  public boolean isWaitingForFirstLevelOptionForNotifications() {
+    return ConversationState.WAITING_FOR_FIRST_LEVEL_OPTION_FOR_NOTIFICATIONS.equals(session.getState());
+  }
+
+  public boolean isWaitingForDescriptionToScheduleNotification() {
+    return ConversationState.WAITING_FOR_DESCRIPTION_TO_SCHEDULE_NOTIFICATION.equals(session.getState());
+  }
+
+  public boolean isWaitingForTimeToScheduleNotification() {
+    return ConversationState.WAITING_FOR_TIME_TO_SCHEDULE_NOTIFICATION.equals(session.getState());
+  }
+
 }

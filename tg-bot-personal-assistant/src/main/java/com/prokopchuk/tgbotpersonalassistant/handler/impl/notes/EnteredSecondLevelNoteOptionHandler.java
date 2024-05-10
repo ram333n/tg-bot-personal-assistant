@@ -20,14 +20,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 @Component
-public class EnteredSecondLevelOptionHandler extends AbstractUserRequestHandler {
+public class EnteredSecondLevelNoteOptionHandler extends AbstractUserRequestHandler {
 
   private static final Pattern NOTE_BUTTON_TEXT_PATTERN = Pattern.compile("(?<noteTitle>.*) \\((?<id>\\d+)\\)");
   private final NoteService noteService;
   private final NotesNavigationKeyboardBuilder notesNavigationKeyboardBuilder;
 
   @Autowired
-  public EnteredSecondLevelOptionHandler(
+  public EnteredSecondLevelNoteOptionHandler(
       UserSessionService userSessionService,
       SenderService senderService,
       StartConversationKeyboardBuilder startConversationKeyboardBuilder,

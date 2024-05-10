@@ -20,3 +20,10 @@ telegram:
 translation:
   google:
     api-key: ${GOOGLE_API_KEY}
+
+org:
+  jobrunr:
+    background-job-server:
+      enabled: true
+    dashboard:
+      enabled: true

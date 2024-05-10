@@ -52,7 +52,7 @@ public class EnteredSpecificNoteOptionHandler extends AbstractUserRequestHandler
     if (NotesNavigationButtonText.isUpdateNote(input)) {
       handleUpdateNote(chatId, messageId, stateData);
     } else if (NotesNavigationButtonText.isDeleteNote(input)) {
-      handleDeleteNote(chatId, messageId, stateData);
+      handleDeleteNote(chatId, messageId);
     } else if (NotesNavigationButtonText.isBackToNotesPage(input)) {
       handleBackToNotesPage(chatId);
     } else {
@@ -70,7 +70,7 @@ public class EnteredSpecificNoteOptionHandler extends AbstractUserRequestHandler
     senderService.replyAndRemoveKeyboard(chatId, messageId, "Enter new title for note");
   }
 
-  private void handleDeleteNote(Long chatId, Integer messageId, SpecificNoteStateData stateData) {
+  private void handleDeleteNote(Long chatId, Integer messageId) {
     userSessionService.changeState(chatId, ConversationState.WAITING_FOR_CONFIRMATION_TO_DELETE_NOTE);
     senderService.reply(
         chatId,
