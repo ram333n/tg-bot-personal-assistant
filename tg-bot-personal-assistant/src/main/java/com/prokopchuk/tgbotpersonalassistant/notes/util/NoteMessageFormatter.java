@@ -20,9 +20,11 @@ public final class NoteMessageFormatter {
   \uD83D\uDD52 Date created: _%s_
   \uD83D\uDD52 Date modified: _%s_
   """;
+
   private static final String SINGLE_NOTE_OPERATIONS_TIP
       = "Press button with specific description and id to operate with note\\(look, edit, delete\\)";
   private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy\\-MM\\-dd HH:mm");
+
   private static final String NOTE_EXTENDED_FORMAT = """
   Id: `%d`
   \uD83D\uDDD2 Title: `%s`
@@ -40,7 +42,11 @@ public final class NoteMessageFormatter {
       return YOU_DO_NOT_HAVE_ANY_NOTES_MESSAGE;
     }
 
-    return formatPagesCount(notes) + "\n\n" + formatNotes(notes) + "\n\n" + SINGLE_NOTE_OPERATIONS_TIP;
+    return formatPagesCount(notes)
+        + "\n\n"
+        + formatNotes(notes)
+        + "\n\n"
+        + SINGLE_NOTE_OPERATIONS_TIP;
   }
 
   private static String formatPagesCount(Page<NoteDto> notes) {

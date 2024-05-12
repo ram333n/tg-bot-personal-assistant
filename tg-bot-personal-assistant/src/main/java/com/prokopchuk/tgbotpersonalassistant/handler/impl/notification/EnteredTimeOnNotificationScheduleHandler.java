@@ -18,6 +18,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class EnteredTimeOnNotificationScheduleHandler extends AbstractUserRequestHandler {
 
+  private static final String NOTIFICATION_SUCCESSFULLY_SCHEDULED_FORMAT
+      = "The notification was successfully scheduled\\. New notification id: `%d`";
   private final NotificationService notificationService;
 
   @Autowired
@@ -51,8 +53,12 @@ public class EnteredTimeOnNotificationScheduleHandler extends AbstractUserReques
       }
 
       stateData.setScheduleTime(scheduleTime);
-      notificationService.createNotification(createNotification(chatId, stateData));
-      senderService.reply(chatId, messageId, "Notification has been scheduled successfully!");
+      Long notificationId = notificationService.createNotification(createNotification(chatId, stateData));
+      senderService.replyWithMessageAndMarkdown(
+          chatId,
+          messageId,
+          String.format(NOTIFICATION_SUCCESSFULLY_SCHEDULED_FORMAT, notificationId)
+      );
       moveToStartState(chatId);
     } catch (IllegalTimeFormatException e) {
       senderService.reply(chatId, messageId, "You entered incorrect time. Please, use supported format");

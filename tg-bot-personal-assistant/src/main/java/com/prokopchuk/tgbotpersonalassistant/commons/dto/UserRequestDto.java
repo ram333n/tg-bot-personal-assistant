@@ -107,4 +107,12 @@ public class UserRequestDto {
     return ConversationState.WAITING_FOR_TIME_TO_SCHEDULE_NOTIFICATION.equals(session.getState());
   }
 
+  public boolean isWaitingForSecondLevelOptionForNotifications() {
+    return ConversationState.WAITING_FOR_SECOND_LEVEL_OPTION_FOR_NOTIFICATIONS.equals(session.getState());
+  }
+
+  public boolean isWaitingForConfirmationToDeleteNotification() {
+    return ConversationState.WAITING_FOR_CONFIRMATION_TO_DELETE_NOTIFICATION.equals(session.getState());
+  }
+
 }

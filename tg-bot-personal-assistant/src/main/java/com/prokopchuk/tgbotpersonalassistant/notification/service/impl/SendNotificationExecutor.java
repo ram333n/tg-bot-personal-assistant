@@ -13,7 +13,7 @@ public class SendNotificationExecutor {
   private final SenderService senderService;
 
   public void execute(NotificationDto notification) {
-    senderService.sendMessageWithMarkdown(notification.getChatId(), NotificationMessageFormatter.format(notification));
+    senderService.sendMessageWithMarkdown(notification.getChatId(), NotificationMessageFormatter.formatOnSending(notification));
   }
 
 }

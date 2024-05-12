@@ -86,7 +86,7 @@ public class EnteredSecondLevelNoteOptionHandler extends AbstractUserRequestHand
     boolean isLastPage = noteService.isLastPage(chatId, paginationData.getPage(), NoteMessageFormatter.NOTES_PAGE_SIZE);
 
     if (isLastPage) {
-      senderService.sendMessage(chatId, "You can't move back, because you are on the last page of available notes!");
+      senderService.sendMessage(chatId, "You can't move forward, because you are on the last page of available notes!");
       return;
     }
 
