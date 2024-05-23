@@ -12,6 +12,17 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMar
 public class StartConversationHandler extends AbstractUserRequestHandler {
 
   private static final String START_COMMAND = "/start";
+  private static final String START_MESSAGE = """
+  Welcome to Proko!👋
+  With Proko you can:
+  - Translate texts 🇬🇧
+  - Generate QR-codes for entered text 📲
+  - Work with notes 🗒
+  - Schedule notifications 🕒
+  - Check weather for settlement ⛅
+  
+  Press on the corresponding button to use bot
+  """;
 
   @Autowired
   public StartConversationHandler(
@@ -33,7 +44,7 @@ public class StartConversationHandler extends AbstractUserRequestHandler {
 
     senderService.sendMessage(
         request.getSession().getChatId(),
-        "YES! `/start` works!",
+        START_MESSAGE,
         replyKeyboard
     );
   }

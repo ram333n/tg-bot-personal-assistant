@@ -31,9 +31,6 @@ public class UserSession extends AuditableEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "user_id") //TODO: useless??
-  private Long userId;
-
   @Column(name = "chat_id", nullable = false, unique = true)
   private Long chatId;
 
