@@ -21,7 +21,8 @@ public enum ConversationState {
   WAITING_FOR_DESCRIPTION_TO_SCHEDULE_NOTIFICATION(MockStateData.class),
   WAITING_FOR_TIME_TO_SCHEDULE_NOTIFICATION(SaveNotificationStateData.class),
   WAITING_FOR_SECOND_LEVEL_OPTION_FOR_NOTIFICATIONS(ListNotificationsStateData.class),
-  WAITING_FOR_CONFIRMATION_TO_DELETE_NOTIFICATION(SpecificNotificationStateData.class);
+  WAITING_FOR_CONFIRMATION_TO_DELETE_NOTIFICATION(SpecificNotificationStateData.class),
+  WAITING_FOR_SETTLEMENT_FOR_WEATHER(MockStateData.class);
 
   private final Class<?> stateDataClass;
 

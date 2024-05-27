@@ -21,6 +21,10 @@ translation:
   google:
     api-key: ${GOOGLE_API_KEY}
 
+weather:
+  open-weather-map:
+    token: ${OPEN_WEATHER_MAP_TOKEN}
+
 org:
   jobrunr:
     background-job-server:

@@ -2,9 +2,11 @@ package com.prokopchuk.tgbotpersonalassistant.bot;
 
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.UserRequestDto;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.session.UserSessionDto;
+import com.prokopchuk.tgbotpersonalassistant.commons.dto.weather.WeatherForecastDto;
 import com.prokopchuk.tgbotpersonalassistant.config.TelegramConfig;
 import com.prokopchuk.tgbotpersonalassistant.handler.DispatcherHandler;
 import com.prokopchuk.tgbotpersonalassistant.session.service.UserSessionService;
+import com.prokopchuk.tgbotpersonalassistant.weather.WeatherService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,6 +21,7 @@ public class CustomTelegramLongPollingBot extends TelegramLongPollingBot {
   private final TelegramConfig telegramConfig;
   private final UserSessionService userSessionService;
   private final DispatcherHandler dispatcher;
+  private final WeatherService weatherService;
 
   @Override
   public void onUpdateReceived(Update update) {

@@ -115,4 +115,8 @@ public class UserRequestDto {
     return ConversationState.WAITING_FOR_CONFIRMATION_TO_DELETE_NOTIFICATION.equals(session.getState());
   }
 
+  public boolean isWaitingForSettlementForWeather() {
+    return ConversationState.WAITING_FOR_SETTLEMENT_FOR_WEATHER.equals(session.getState());
+  }
+
 }
