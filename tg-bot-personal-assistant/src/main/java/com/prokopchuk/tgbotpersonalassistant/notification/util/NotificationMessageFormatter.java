@@ -1,7 +1,9 @@
 package com.prokopchuk.tgbotpersonalassistant.notification.util;
 
+import com.prokopchuk.tgbotpersonalassistant.commons.dto.notification.AiGeneratedNotificationDto;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.notification.NotificationDto;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.StringJoiner;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -31,6 +33,11 @@ public final class NotificationMessageFormatter {
   private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy\\-MM\\-dd HH:mm");
   private static final String SINGLE_NOTIFICATION_OPERATIONS_TIP
       = "If you want to delete notification, press on button with specific id";
+
+  private static final String AI_GENERATED_NOTIFICATION_FORMAT = """
+      \uD83D\uDD52 Notify at: `%s`
+      \uD83D\uDDD2 Description: `%s`
+      """;
 
   public static String formatOnSending(NotificationDto notification) {
     return String.format(NOTIFICATION_SEND_MESSAGE_FORMAT, notification.getDescription());
@@ -66,6 +73,28 @@ public final class NotificationMessageFormatter {
         notification.getDescription(),
         notification.getDateCreated().format(DATE_TIME_FORMATTER),
         notification.getSchedulingTime().format(DATE_TIME_FORMATTER)
+    );
+  }
+
+  public static String formatAiGeneratedNotes(List<AiGeneratedNotificationDto> notifications) {
+    StringJoiner result = new StringJoiner("\n");
+
+    notifications.forEach(n -> result.add(formatSingleAiNotification(n)));
+
+    return """
+        Here are generated notifications:
+        
+        %s
+        
+        Do you want to schedule them?
+        """.formatted(result.toString());
+  }
+
+  private static String formatSingleAiNotification(AiGeneratedNotificationDto notification) {
+    return String.format(
+        AI_GENERATED_NOTIFICATION_FORMAT,
+        notification.getSchedulingTime(),
+        notification.getDescription()
     );
   }
 

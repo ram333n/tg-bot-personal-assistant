@@ -2,6 +2,7 @@ package com.prokopchuk.tgbotpersonalassistant.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -9,6 +10,10 @@ import lombok.NoArgsConstructor;
 public final class JsonUtils {
 
   private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
+  static {
+    OBJECT_MAPPER.registerModule(new JavaTimeModule());
+  }
 
   public static String writeAsString(Object obj) {
     try {

@@ -119,4 +119,12 @@ public class UserRequestDto {
     return ConversationState.WAITING_FOR_SETTLEMENT_FOR_WEATHER.equals(session.getState());
   }
 
+  public boolean isWaitingForPromptToGenerateNotifications() {
+    return ConversationState.WAITING_FOR_PROMPT_TO_GENERATE_NOTIFICATIONS.equals(session.getState());
+  }
+
+  public boolean isWaitingForGeneratedNotificationsApproval() {
+    return ConversationState.WAITING_FOR_GENERATED_NOTIFICATIONS_APPROVAL.equals(session.getState());
+  }
+
 }

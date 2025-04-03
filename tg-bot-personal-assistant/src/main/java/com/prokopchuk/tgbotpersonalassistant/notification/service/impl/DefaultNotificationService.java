@@ -1,5 +1,6 @@
 package com.prokopchuk.tgbotpersonalassistant.notification.service.impl;
 
+import com.prokopchuk.tgbotpersonalassistant.commons.dto.notification.AiGeneratedNotificationDto;
 import com.prokopchuk.tgbotpersonalassistant.commons.dto.notification.NotificationDto;
 import com.prokopchuk.tgbotpersonalassistant.exception.IllegalTimeFormatException;
 import com.prokopchuk.tgbotpersonalassistant.notification.domain.Notification;
@@ -7,6 +8,7 @@ import com.prokopchuk.tgbotpersonalassistant.notification.mapper.NotificationMap
 import com.prokopchuk.tgbotpersonalassistant.notification.repository.NotificationRepository;
 import com.prokopchuk.tgbotpersonalassistant.notification.service.NotificationService;
 import com.prokopchuk.tgbotpersonalassistant.util.DateTimeUtils;
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -97,6 +99,23 @@ public class DefaultNotificationService implements NotificationService {
   @Override
   public boolean existsById(Long id) {
     return repository.existsById(id);
+  }
+
+  @Override
+  public void createNotifications(Long chatId, List<AiGeneratedNotificationDto> notifications) {
+    notifications.stream()
+        .filter(n -> DateTimeUtils.isAfterNow(n.getSchedulingTime()))
+        .map(n -> mapToDto(chatId, n))
+        .forEach(this::createNotification);
+  }
+
+  private NotificationDto mapToDto(Long chatId, AiGeneratedNotificationDto notification) {
+    NotificationDto result = new NotificationDto();
+    result.setChatId(chatId);
+    result.setSchedulingTime(notification.getSchedulingTime());
+    result.setDescription(notification.getDescription());
+
+    return result;
   }
 
 }

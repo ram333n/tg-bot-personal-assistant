@@ -50,6 +50,8 @@ public class EnteredFirstLevelNotificationOptionHandler extends AbstractUserRequ
       handleScheduleNotification(chatId, messageId);
     } else if (NotificationsNavigationButtonText.isGetNotificationsPage(input)) {
       handleGetNotificationsPage(chatId);
+    } else if (NotificationsNavigationButtonText.isGenerateNotifications(input)) {
+      handleGenerateNotifications(chatId, messageId);
     } else if (NotificationsNavigationButtonText.isBackToMainMenu(input)) {
       moveToStartState(chatId);
     } else {
@@ -77,6 +79,11 @@ public class EnteredFirstLevelNotificationOptionHandler extends AbstractUserRequ
         NotificationMessageFormatter.format(notificationsPage),
         notificationsNavigationKeyboardBuilder.buildNotificationsPage(notificationsPage)
     );
+  }
+
+  private void handleGenerateNotifications(Long chatId, Integer messageId) {
+    userSessionService.changeState(chatId, ConversationState.WAITING_FOR_PROMPT_TO_GENERATE_NOTIFICATIONS);
+    senderService.replyAndRemoveKeyboard(chatId, messageId,"Enter description for generation");
   }
 
 }

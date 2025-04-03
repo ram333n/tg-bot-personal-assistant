@@ -8,6 +8,7 @@ public enum NotificationsNavigationButtonText {
 
   GET_NOTIFICATIONS_PAGE("\uD83D\uDCD1 List notifications"),
   SCHEDULE_NOTIFICATION("🕒 Schedule a notification"),
+  GENERATE_NOTIFICATIONS("\uD83E\uDD16 Generate notifications with AI"),
   BACK_TO_MAIN_MENU("Back to main menu");
 
   private final String text;
@@ -17,7 +18,7 @@ public enum NotificationsNavigationButtonText {
   }
 
   public static List<NotificationsNavigationButtonText> getFirstLevelOptions() {
-    return List.of(GET_NOTIFICATIONS_PAGE, SCHEDULE_NOTIFICATION, BACK_TO_MAIN_MENU);
+    return List.of(GET_NOTIFICATIONS_PAGE, SCHEDULE_NOTIFICATION, GENERATE_NOTIFICATIONS, BACK_TO_MAIN_MENU);
   }
 
   public static boolean isGetNotificationsPage(String text) {
@@ -26,6 +27,10 @@ public enum NotificationsNavigationButtonText {
 
   public static boolean isScheduleNotification(String text) {
     return SCHEDULE_NOTIFICATION.getText().equals(text);
+  }
+
+  public static boolean isGenerateNotifications(String text) {
+    return GENERATE_NOTIFICATIONS.getText().equals(text);
   }
 
   public static boolean isBackToMainMenu(String text) {

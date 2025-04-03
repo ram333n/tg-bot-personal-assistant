@@ -119,6 +119,10 @@
       <artifactId>mapstruct-processor</artifactId>
       <version>1.5.5.Final</version>
     </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.datatype</groupId>
+      <artifactId>jackson-datatype-jsr310</artifactId>
+    </dependency>
 
 <!--    Spring AI-->
     <dependency>

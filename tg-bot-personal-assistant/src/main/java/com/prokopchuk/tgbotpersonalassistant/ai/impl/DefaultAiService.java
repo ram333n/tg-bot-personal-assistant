@@ -17,15 +17,14 @@ public class DefaultAiService implements AiService {
 
   private final ChatClient chatClient;
 
-  @Scheduled(fixedRate = 500000)
-  public void test() {
-    var chatResponse = chatClient.prompt()
-        .user("Create me daily schedule of Christiano Ronaldo")
-        .call()
-        .entity(new ParameterizedTypeReference<List<AiGeneratedNotificationDto>>() {
-        });
+  @Override
+  public List<AiGeneratedNotificationDto> generateNotifications(String prompt) {
+    log.info("Sending prompt to generate notifications. Prompt: {}", prompt);
 
-    log.info("Got response from llm: {}", chatResponse);
+    return chatClient.prompt()
+        .user(prompt)
+        .call()
+        .entity(new ParameterizedTypeReference<>() {});
   }
 
 }

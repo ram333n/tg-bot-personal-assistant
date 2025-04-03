@@ -11,4 +11,8 @@ public final class DateTimeUtils {
     return dateTime.isBefore(LocalDateTime.now());
   }
 
+  public static boolean isAfterNow(LocalDateTime dateTime) {
+    return dateTime.isAfter(LocalDateTime.now());
+  }
+
 }
