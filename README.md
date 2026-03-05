@@ -1,6 +1,4 @@
-# tg-bot-personal-assistant
-
-Telegram bot — personal assistant (Bachelor diploma project).
+# Proko - personal Telegram assistant bot
 
 ## ✨ Features
 
